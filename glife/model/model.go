@@ -22,10 +22,30 @@ type MutableBitMatrix interface {
 }
 
 type ArrayBitMatrix struct {
-	MutableBitMatrix
 	width  uint64
 	height uint64
 	data   [][]bool
+}
+
+func (a *ArrayBitMatrix) Get(x uint64, y uint64) bool {
+	return a.data[x][y]
+}
+
+func (a *ArrayBitMatrix) Set(x uint64, y uint64, value bool) {
+	a.data[x][y] = value
+}
+
+func (a *ArrayBitMatrix) Toggle(x uint64, y uint64) {
+	a.Set(x, y, a.Get(x, y))
+}
+
+func (a *ArrayBitMatrix) GetNeighborhood(x uint64, y uint64) Neighborhood {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (a *ArrayBitMatrix) Copy() BitMatrix {
+	return NewArrayBitMatrixFromExisting(a)
 }
 
 func (a *ArrayBitMatrix) Width() uint64 {
@@ -36,7 +56,7 @@ func (a *ArrayBitMatrix) Height() uint64 {
 	return a.height
 }
 
-func (a *ArrayBitMatrix) strategy() BorderStrategy {
+func (a *ArrayBitMatrix) Strategy() BorderStrategy {
 	return &ToroidalBorderStrategy{}
 }
 
